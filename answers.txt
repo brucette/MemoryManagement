@@ -1,0 +1,94 @@
+1. Stacken är platsen i datorns minne där 
+Heapen är platsen i datorns minne där (mass memory of the machine)
+
++-------------------+
+|                   |
+|                   |
++-------------------+
+|     HEAP          |
+|                   |
+|                   |
+|                   |
+|                   |
+|                   |
++-------------------+
+|                   | <---- 
+
+
+|      STACK        |
++-------------------+
+
+2. Value Types är alla primitiva typer som t.ex int, float och double. 
+Värdet för en Value Type kan lagras direkt i stacken, men kan också 
+lagras i heapen om den deklareras inom en Referense Type, t.ex. ett vikt 
+attribut inom en Person klass. Value Types lagras alltså där de deklareras. 
+
+Reference Types är typer som t.ex. object, string och interface. De lagras
+alltid i heapen. På stacken finns sedan en referens (pointer/adress) till 
+minnet på heapen där själva värdet finns. 
+
+3. I den första metoden deklareras variablerna x och y som int (en value type) 
+på stacken, vilket betyder att när man sedan tilldelar y till x, kopieras 
+värdet i x och lagras i variablen y.
+
+I den andra metoden deklareras variablerna x och y som instanser av MyInt 
+(en reference type) på heapen. När y tilldelas till x, pekar både x och y 
+till samma objekt på heapen, vilket betyder att när man ändrar MyValue på 
+y, ska även MyValue på x ändras. 
+
+
+ÖVNING 1: ExamineList()
+
+2. Listans kapacitet ökar när listan är full och ett ytterligare element läggs 
+   till listan.
+
+3. Kapaciteten dubblas, t.ex. från 4 som är default till 8 när element 5 läggs till.
+
+4. Listans kapacitet ökar inte i samma takt som element läggs till då nytt minne måste 
+   allokeras och hela listan kopieras varje gång kapacitet ökas. Det är alltså mer 
+   effektivt att öka kapacitet mer på en gång än att köra hela processen varje gång 
+   ett element läss till.
+
+5. Kapaciteten minskar inte även om element tas bort.
+
+6. När man vet exakt hur många element man kommer behöva ha i en lista och är 
+   säker att antalet inte kommer att ökas, är det fördelaktigt att använda en 
+   egendefinierad array istället för en lista.
+
+
+ÖVNING 2: ExamineQueue()
+
+1.
+     a - c                              d - e                               f - g
+   +----------------+               +----------------+                  +----------------+ 
+   |     Kassa      |               |     Kassa      |                  |     Kassa      |
+   +----------------+               +----------------+                  +----------------+
+
+    +-----------+                     +-----------+                       +-----------+ 
+    |  1. Kalle |--> Expedierad       |  2. Greta | --> Expedierad        |  3. Stina | --> Expedierad 
+    +-----------+                     +-----------+                       +-----------+
+    +-----------+                     +-----------+                       +-----------+ 
+    |  2. Greta |                     |  3. Stina |                       |  4. Olle  | 
+    +-----------+                     +-----------+                       +-----------+ 
+                     
+                          
+
+                    
+ÖVNING 3: ExamineStack()
+
+1.
+     a - c                              d - e                               f - g
+   +----------------+               +----------------+                  +----------------+ 
+   |     Kassa      |               |     Kassa      |                  |     Kassa      |
+   +----------------+               +----------------+                  +----------------+
+
+    +-----------+                     +-----------+                       +-----------+ 
+    |  1. Kalle |                     |  1. Kalle |                       |  1. Kalle | 
+    +-----------+                     +-----------+                       +-----------+
+    +-----------+                     +-----------+                       +-----------+ 
+    |  2. Greta | --> Expedierad      |  3. Stina | --> Expedierad        |  4. Olle  | --> Expedierad 
+    +-----------+                     +-----------+                       +-----------+ 
+
+Att använda en stack för att simulera en kö vore inte så smart då den som ställer sig
+i kön först skulle expedieras sist, eventuellt aldrig om det ständigt skulle ställa sig
+folk i kön.

@@ -1,22 +1,73 @@
-1. Stacken är platsen i datorns minne där 
-Heapen är platsen i datorns minne där (mass memory of the machine)
+1. 
+Stacken är en del av datorns minne där anrop och metoder i ett program körs.
+Metoderna staplas på stacken och de körs en i taget. När en metod är körd, 
+kastas den automatiskt från stacken och nästa metod körs. 
+Man kan bara lägga till eller ta bort saker från toppen av stacken. 
 
-+-------------------+
-|                   |
-|                   |
-+-------------------+
-|     HEAP          |
-|                   |
-|                   |
-|                   |
-|                   |
-|                   |
-+-------------------+
-|                   | <---- 
+Heapen är en större del av datorns minne (mass memory of the machine) som 
+lagrar data (t.ex. globala variabler) man behöver även utanför metoderna/efter
+att metoderna har körds.
+
+        Main()
+        {
+            Person mathilda = new("Mary");
+            int numberOfPpl = 80;
+            string energy = "sun";
+
+            SayHello(Person person.name);
+            SayGoodBye();
+
+            mathilda.Delete();
+        }
+
+                        IFALLET AV OVAN EXEMPELKOD:
+
+                         +----------------------------+                   
+                         |     Machine code etc.      |                                
+                         +----------------------------+                               
+                         |           HEAP             |                               
+                         |                            |                               
+                         | 0x123 "sun"                |    Heap expands                             
+                         | 0x456 mary                 |    ↓                        
+                         |                            |                                         
+                         +----------------------------+    Can overflow into each other, more commonly stack overflows, if e.g. too many function calls are made repetitively in a recursion.                       
+                         | int numberOfPpl = 80       |    
+                         | string energy = 0x123      |    ↑   
+                         | Person mary = 0x456        |    Stack expands 
+                         |                            |
+                         | SayHello();                |
+                         | SayGoodBye();              |          
+                         |                            |                                
+                         |           STACK            |                 
+                         +----------------------------+                               
 
 
-|      STACK        |
-+-------------------+
+                                STACK                                      
+                         +-------------------+                                  +-------------------+                                                            
+                         |                   |                                  |                   |    
+                         +-------------------+                                  +-------------------+          
+Läggs på 2. plats,       |    SayHello()     |        Läggs 3. på stacken,      |    SayGoodBye()   |
+körs och kastas bort. →  |                   |        körs och kastas bort. →   |                   |
+                         +-------------------+                                  +-------------------+
+Läggs 1. på stacken →    |      Main ()      |        4. Kastas bort då all kod |      Main ()      |                   
+                         +-------------------+        inom den är körd.         +-------------------+  
+                                        
+
+
+                          HEAP
+                          +-------------------+                      
+ Directly accessible  --> |  0x123  |  0x456  |  <-- Directly accessible                  
+ in any order,unlike      |         |{ name = | Garbage Collected eventually after                    
+ the stack where          |  "sun"  | "Mary"} | pointer to the class instance is deleted/
+ only latest is.          +-------------------+ class is no longer used.
+                          |  0x789  |  0xff4  |                       
+                          |         |         |                       
+                          |         |         |                      
+                          +-------------------+
+                          |  0x789  |  0xff4  |                       
+                          |         |         |                       
+                          |         |         |                      
+                          +-------------------+
 
 2. Value Types är alla primitiva typer som t.ex int, float och double. 
 Värdet för en Value Type kan lagras direkt i stacken, men kan också 
@@ -65,7 +116,7 @@ y, ska även MyValue på x ändras.
    +----------------+               +----------------+                  +----------------+
 
     +-----------+                     +-----------+                       +-----------+ 
-    |  1. Kalle |--> Expedierad       |  2. Greta | --> Expedierad        |  3. Stina | --> Expedierad 
+    |  1. Kalle |--> Served           |  2. Greta | --> Served            |  3. Stina | --> Served 
     +-----------+                     +-----------+                       +-----------+
     +-----------+                     +-----------+                       +-----------+ 
     |  2. Greta |                     |  3. Stina |                       |  4. Olle  | 
@@ -86,9 +137,16 @@ y, ska även MyValue på x ändras.
     |  1. Kalle |                     |  1. Kalle |                       |  1. Kalle | 
     +-----------+                     +-----------+                       +-----------+
     +-----------+                     +-----------+                       +-----------+ 
-    |  2. Greta | --> Expedierad      |  3. Stina | --> Expedierad        |  4. Olle  | --> Expedierad 
+    |  2. Greta | --> Served          |  3. Stina | --> Served            |  4. Olle  | --> Served 
     +-----------+                     +-----------+                       +-----------+ 
 
-Att använda en stack för att simulera en kö vore inte så smart då den som ställer sig
+2. Att använda en stack för att simulera en kö vore inte så smart då den som ställer sig
 i kön först skulle expedieras sist, eventuellt aldrig om det ständigt skulle ställa sig
 folk i kön.
+
+
+ÖVNING 4: CheckParenthesis()
+
+1. Jag använder en stack datastuktur för att lägga till varje tecken som öppnar en parentes
+   och när när tecken som stänger en parentes dyker upp, kollar om det matchar det senaste - 
+   det första på stacken. Om de inte matchar är strängen inte välformerad.

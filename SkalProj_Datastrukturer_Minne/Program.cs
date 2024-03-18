@@ -13,7 +13,7 @@ namespace SkalProj_Datastrukturer_Minne
         {
             while (true)
             {
-                Console.WriteLine("Please navigate through the menu by inputting the number \n(1, 2, 3 ,4, 0) of your choice"
+                Console.WriteLine("\nPlease navigate through the menu by inputting the number \n(1, 2, 3 ,4, 0) of your choice"
                     + "\n1. Examine a List"
                     + "\n2. Examine a Queue"
                     + "\n3. Examine a Stack"
@@ -63,7 +63,6 @@ namespace SkalProj_Datastrukturer_Minne
         static void ExamineList()
         {
             /*
-         menue.
              * Create a switch statement with cases '+' and '-'
              * '+': Add the rest of the input to the list (The user could write +Adam and "Adam" would be added to the list)
              * '-': Remove the rest of the input from the list (The user could write -Adam and "Adam" would be removed from the list)
@@ -76,13 +75,11 @@ namespace SkalProj_Datastrukturer_Minne
 
             while (true)
             {
-                Console.WriteLine("\nEnter one of the 3 options:" +
-                    "\n + Followed by text to add a word to the list, e.g. +Adam" +
-                    //"\n\n or " +
-                    "\n - Followed by text to remove a word from the list, e.g. -Adam" +
+                string input = Util.GetUserInput("\nEnter one of the 3 options:" +
+                    "\n + Followed by text to add to the list, e.g. +Adam" +
+                    "\n - Followed by text to remove from the list, e.g. -Adam" +
                     "\n 0. Go back to the main menu");
-
-                string input = Console.ReadLine();
+                 
                 char nav = input[0];
                 string value = input.Substring(1);
 
@@ -90,55 +87,36 @@ namespace SkalProj_Datastrukturer_Minne
                 {
                     case '+':
                         theList.Add(value);
-                        Console.WriteLine($"List Count: {theList.Count}");
-                        Console.WriteLine($"List Capacity: {theList.Capacity}");
+                        Console.WriteLine($"\nList Count: {theList.Count}");
+                        Console.WriteLine($"List Capacity: {theList.Capacity}\n");
                         break;
                     case '-':
                         theList.Remove(value);
-                        Console.WriteLine($"List Count: {theList.Count}");
-                        Console.WriteLine($"List Capacity: {theList.Capacity}");
+                        Console.WriteLine($"\nList Count: {theList.Count}");
+                        Console.WriteLine($"List Capacity: {theList.Capacity}\n");
                         break;
                     case '0':
                         return;
                     default:
-                        Console.WriteLine("Please enter valid input (starting with + or -)");
+                        Console.WriteLine("Please enter valid input (starting with +, - or 0)");
                         break;
                 }
             }
         }
 
-        // Method for listing out everyone in the queue ???????????????? to helper methods OR UTILS file?
         static void DisplayQueue(Queue<string> queue)
         {
-            Console.WriteLine("\nCurrently in queue:");
-
-            foreach (string item in queue)
+            if (queue.Count > 0)
             {
-                Console.WriteLine(item);
+                Console.WriteLine("\nCurrently in queue:");
+
+                foreach (string item in queue)
+                {
+                    Util.PrintWithColour(item, ConsoleColor.DarkRed);
+                }
             }
-        }
-
-        static void ReverseText()
-        {
-            Console.WriteLine("\nEnter text to be reversed:");
-            string text = Console.ReadLine();
-
-            Stack<char> reversedText = new Stack<char>();
-
-            foreach (Char character in text)
-                reversedText.Push(character);
-
-            Console.WriteLine("\nReversed text:");
-            //foreach (Char character in reversedText)
-            //Console.Write(character);
-
-            int stackCount = reversedText.Count;
-
-            for (int i = 0; i < stackCount; i++)
-            {
-                Console.Write(reversedText.Pop());
-            }
-            Console.WriteLine();
+            else
+                Console.WriteLine($"\nThe queue is empty!");
         }
 
         /// <summary>
@@ -154,32 +132,13 @@ namespace SkalProj_Datastrukturer_Minne
 
             Queue<string> icaQueue = new Queue<string>();
 
-            //icaQueue.Enqueue("Kalle");
-            //DisplayQueue(icaQueue);
-
-            //icaQueue.Enqueue("Greta");
-            //DisplayQueue(icaQueue);
-
-            //icaQueue.Dequeue();
-            //DisplayQueue(icaQueue);
-
-            //icaQueue.Enqueue("Stina");
-            //DisplayQueue(icaQueue);
-
-            //icaQueue.Dequeue();
-            //DisplayQueue(icaQueue);
-
-            //icaQueue.Enqueue("Olle");
-            //DisplayQueue(icaQueue);
-
             while (true)
             {
-                Console.WriteLine("\nEnter one of the 3 options:" +
+                string input = Util.GetUserInput("\nEnter one of the 3 options:" +
                    "\n + Followed by name to add customer to queue, e.g. +Greta" +
                    "\n - Serve next customer in the queue" +
                    "\n 0. Go back to the main menu");
 
-                string input = Console.ReadLine();
                 char nav = input[0];
                 string person = input.Substring(1);
 
@@ -187,26 +146,49 @@ namespace SkalProj_Datastrukturer_Minne
                 {
                     case '+':
                         icaQueue.Enqueue(person);
-                        Console.WriteLine($"\n{person} joined the queue");
+                        Util.PrintWithColour($"\n**{person} joined the queue**", ConsoleColor.Cyan);
                         DisplayQueue(icaQueue);
                         break;
                     case '-':
-                        Console.WriteLine($"\n{icaQueue.Dequeue()} was served!");
+                        if (icaQueue.Count > 0)
+                        {
+                            Util.PrintWithColour($"\n{icaQueue.Dequeue()} was served!",         ConsoleColor.Green);
+                        }
                         DisplayQueue(icaQueue);
                         break;
                     case '0':
                         return;
                     default:
-                        Console.WriteLine("Please enter valid input (0, 1, 2)");
+                        Console.WriteLine("Please enter valid input (+, -, 0)");
                         break;
                 }
             }
         }
 
+        static void ReverseText()
+        {
+            string text = Util.GetUserInput("\nEnter text to be reversed:");
+
+            Stack<char> reversedText = new Stack<char>();
+
+            foreach (Char character in text)
+                reversedText.Push(character);
+
+            Console.WriteLine("\nReversed text:");
+
+            int stackCount = reversedText.Count;
+
+            for (int i = 0; i < stackCount; i++)
+            {
+                Console.Write(reversedText.Pop());
+            }
+            Console.WriteLine();
+        }
+
         /// <summary>
         /// Examines the datastructure Stack
         /// </summary>
-        static void ExamineStack()
+        static void ExamineStack() 
         {
             /*
              * Loop this method until the user inputs something to exit to main menue.
@@ -216,11 +198,9 @@ namespace SkalProj_Datastrukturer_Minne
 
             while (true)
             {
-                Console.WriteLine("\nSelect one of the 2 options:" +
+                string input = Util.GetUserInput("\nSelect one of the 2 options:" +
                    "\n 1. Enter a text to see it reversed" +
                    "\n 0. Go back to the main menu");
-
-                string input = Console.ReadLine();
 
                 switch (input)
                 {
@@ -249,50 +229,7 @@ namespace SkalProj_Datastrukturer_Minne
 
             return result;
         }
-
-        static bool CheckForValidString(List<Char> list)
-        {
-            char[] openers = { '(', '{', '[' };
-            char[] closers = { ')', '}', ']' };
-            bool result = true;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (closers.Contains(list[i]))
-                {
-                    //int indexOfPrevious = parenthesis.IndexOf(character) - 1;
-                    //char previousCharacter = parenthesis[indexOfPrevious];
-                    //parenthesis.RemoveAt(indexOfPrevious);
-                    //parenthesis.RemoveAt(indexOfPrevious + 1);
-
-                    char currentCharacter = list[i];
-                    char previousCharacter = list[i - 1];
-
-                    bool isPair = CheckIfPair(previousCharacter, currentCharacter);
-
-                    if (isPair)
-                    {
-                        list.Remove(list[i]);
-                        list.Remove(list[i - 1]);
-                        Console.WriteLine($"Count: {list.Count}");
-
-                        //Console.WriteLine("List now looks like:");
-                        //foreach (Char l in list)
-                        //    Console.Write(l);
-
-                        result = true;
-                        break;
-                    }
-                    else
-                    {
-                        result = false;
-                        break;
-                    }
-                    //Console.WriteLine(parenthesis.IndexOf(character));
-                }
-            }
-            return result;
-        }
+        
         static void CheckParanthesis()
         {
             /*
@@ -301,42 +238,64 @@ namespace SkalProj_Datastrukturer_Minne
              * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
              */
 
-            Console.WriteLine("\nSelect one of the 2 options:" +
+            string input = Util.GetUserInput("\nSelect one of the 2 options:" +
                    "\n 1. Enter a text to check its parenthesis" +
                    "\n 0. Go back to the main menu");
-            string input = Console.ReadLine();
 
-            char[] valid = { '(', '{', '[', ')', '}', ']' };
+            int count = 0;
+            char[] openers = { '(', '{', '[' };
+            char[] closers = { ')', '}', ']' };
+            bool answer = true;
+            string message;
 
-            List<Char> parenthesis = new List<Char>();
+            Stack<Char> parenthesis = new Stack<Char>();
 
-            switch (input)
+            switch (input) 
             {
                 case "1":
-                    Console.WriteLine("\nEnter text to be checked:");
-                    string text = Console.ReadLine();
+                    string text = Util.GetUserInput("\nEnter text to be checked:");
 
-                    bool answer = true;
-
-                    // Get only the parenthesis contained in the text entered by user
                     foreach (Char character in text)
                     {
-                        if (valid.Contains(character))
-                            parenthesis.Add(character);
+                        if (openers.Contains(character))
+                        {
+                            parenthesis.Push(character);
+                        }
+                        else if (closers.Contains(character) && parenthesis.Count > 0)
+                        {
+                            // get latest opener parenthesis on the stack
+                            char latestOpener = parenthesis.Peek();
+                            
+                            bool isPair = CheckIfPair(latestOpener, character);
+
+                            if (isPair)
+                            {
+                                // remove the latest opener from the stack to get the    
+                                // next opener, for which we continue looking for a closer, to the top of the stack
+                                parenthesis.Pop();
+                                count += 1;
+                            }
+                            else
+                            {
+                                answer = false;
+                                break;
+                            }
+                        }
                     }
 
-                    while (answer != false && parenthesis.Count >= 1)
-                    {
-                        answer = CheckForValidString(parenthesis);
-                    }
-                    Console.WriteLine(answer);
+                    // a count of 0 means no pairs have been removed and no parenthesis where in the given input, as a mismatched pair would immediately break the loop
+                    // stack should not have elements at the end of the loop as they all should be closed and removed
+                    if (count == 0 || parenthesis.Count > 0)
+                        answer = false;
+
+                    message = answer ? "Valid string" : "Invalid string";
+                    Console.WriteLine($"{message}");
                     break;
                 case "0":
-                    return;
+                return;
                 default:
                     Console.WriteLine("Please enter valid input (0, 1)");
                     break;
-     
             }
         }
     }
